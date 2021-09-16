@@ -152,42 +152,40 @@ public class OneToMany {
 		System.out.println("Enter the Question Id which you want to update: ");
 		int queid = sc.nextInt();
 		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
 		Question question = session.get(Question.class, queid);
-		Answer answer = null;
-		List<Answer> answers = new ArrayList<Answer>();
 		System.out.println("What You Want to Update? 1 For Question and 2 For Answer. ");
 		int ch = sc.nextInt();
 		sc.nextLine();
 		if (ch == 1) {
 			// update que
+			System.out.println("Your Old Question is: "+question.getQuestion());
 			System.out.println("Enter New Question: ");
 			question.setQuestion(sc.nextLine());
-		} else if (ch == 2) {
-			// update ans
-			for (int i = 0; i < question.getAnswers().size(); i++) {
-				System.out.println("Your Old Answers are: "+question.getAnswers().get(i).getAnswer()+"\n");
+			List<Answer> answers = new ArrayList<Answer>();
+			for (Answer answer : question.getAnswers()) {
 				answers.add(answer);
 			}
+			System.out.println(answers);
 			
-			while (true) {
-				System.out.println("Do you want to update a Answer? press 1.");
+			for (int i = 0; i < answers.size(); i++) {
+				Answer answer = session.get(Answer.class, answers.get(i).getAid());
+				System.out.println("Your"+i+" Answer is: " + answer.getAnswer());
+				System.out.println("Do you wanna update this answer? press 1.");
 				int ch1 = sc.nextInt();
+				sc.nextLine();
 				if (ch1 == 1) {
-					answer = new Answer();
 					System.out.println("Enter New Answer: ");
 					answer.setAnswer(sc.nextLine());
-					answers.add(answer);
-					answer.setQuestion(question);
+					session.update(answer);
 				}
-				else {
-					break;
-				}	
 			}
+			System.out.println(answers);
 			question.setAnswers(answers);
 		}
-		Transaction tx = session.beginTransaction();
+
 		try {
-			session.save(question);
+			session.update(question);
 			tx.commit();
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
