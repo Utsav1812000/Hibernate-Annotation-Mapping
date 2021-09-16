@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+    <property name="hibernate.connection.url">jdbc:sqlserver://localhost:1433;databaseName=hb1</property>
+    <property name="hibernate.connection.username">root2</property>
+    <property name="hibernate.connection.password">root</property>
+    <property name="hibernate.connection.driver_class">com.microsoft.sqlserver.jdbc.SQLServerDriver</property>
+    <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+    <property name="hibernate.show_sql">false</property>
+    <property name="hibernate.hbm2ddl.auto">update</property>
+    
+<!--     mapping for one to one -->
+<!--     <mapping class="com.onetoone.Question"/> -->
+<!--     <mapping class="com.onetoone.Answer"/> -->
+
+<!--     mapping for one to many -->
+    <mapping class="com.onetomany.Question"/>
+    <mapping class="com.onetomany.Answer"/>
+
+<!--     mapping for many to many -->
+<!-- 	<mapping class="com.manytomany.Employee"/> -->
+<!--     <mapping class="com.manytomany.Projects"/> -->
+    
+    </session-factory>
+</hibernate-configuration>
